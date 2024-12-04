@@ -31,6 +31,12 @@ class OccupancyGrid2d(object):
         if not self.LoadParameters():
             rospy.logerr("%s: Error loading parameters.", self._name)
             return Falsemapper
+
+        # Register callbacks.
+        if not self.RegisterCallbacks():
+            rospy.logerr("%s: Error registering callbacks.", self._name)
+            return False
+            
         # Set up the map.
         self._map = np.zeros((self._x_num, self._y_num))
 
