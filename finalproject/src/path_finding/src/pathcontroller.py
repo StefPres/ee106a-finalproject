@@ -15,7 +15,7 @@ from geometry_msgs.msg import TransformStamped, PoseStamped, Twist, Point
 from std_msgs.msg import ColorRGBA
 from turtlebot_control import controller
 
-# TODO: Add turtlebot commands, trajectory planning, recalculating path
+# TODO: Add recalculating path
 class PathController:
     def __init__(self):
         # Set up tf buffer and listener.
