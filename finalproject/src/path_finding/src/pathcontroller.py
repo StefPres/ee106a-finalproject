@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import rospy
 import tf2_ros
 import tf
@@ -6,17 +7,17 @@ import numpy as np
 
 from a_star import A_Star_Search
 from occupancy_grid_2d import OccupancyGrid2d
+from trajectory import plan_curved_trajectory
 
 from sensor_msgs.msg import LaserScan
 from visualization_msgs.msg import Marker
-from geometry_msgs.msg import Point
+from geometry_msgs.msg import TransformStamped, PoseStamped, Twist, Point
 from std_msgs.msg import ColorRGBA
+from turtlebot_control import controller
 
 # TODO: Add turtlebot commands, trajectory planning, recalculating path
 class PathController:
     def __init__(self):
-        self._intialized = False
-
         # Set up tf buffer and listener.
         self._tf_buffer = tf2_ros.Buffer()
         self._tf_listener = tf2_ros.TransformListener(self._tf_buffer)
@@ -29,8 +30,7 @@ class PathController:
         if not self.SetupCallbacks():
             return False
         
-        self.AStar = A_Star_Search(self.og.ExportGrid(), [0, 0], [0, 1])
-        self.path = self.AStar.search()
+        self.AStar = A_Star_Search(self.og.ExportGrid(), [0, 0], [5, 5])
 
         # set up relevant frames and topics
         self._sensor_frame = rospy.get_param("~frames/sensor")
@@ -46,12 +46,13 @@ class PathController:
     # TODO: finish
     def SetupCallbacks(self):
         self.gridupdater = rospy.Subscriber(self.og._vis_topic,Marker,self.UpdateGrid,queue_size=1)
-
+        self.turtlebotcontroller = rospy.Publisher("cmd_vel", Twist, queue_size=10)
         return True
     
     # TODO: finish
-    def updateGrid(self, msg):
-        self.AStar.update_grid(self.og.ExportGrid())
+    def UpdateGrid(self, msg):
+        newgrid = self.ConvertGrid(self.og.ExportGrid())
+        self.AStar.update_grid(newgrid)
         try:
             pose = self._tf_buffer.lookup_transform(
                 self._fixed_frame, self._sensor_frame, rospy.Time())
@@ -66,10 +67,29 @@ class PathController:
         sensor_y = pose.transform.translation.y
         src = self.og.PointToVoxel(sensor_x, sensor_y)
         self.AStar.update_start(src)
+        self.ExecuteTrajectory()
 
     # TODO: get the true position of the destination. this is hard-coded for testing.
     def updateDestination(self, msg):
-        self.AStar.update_dest([0, 1])
-    
-    
-        
+        self.AStar.update_dest([5, 5])
+
+    def ConvertGrid(self, grid):
+        newgrid = np.zeros((grid.shape[0], grid.shape[1]))
+        for x in range(grid.shape[0]):
+            for y in range(grid.shape[1]):
+                if grid[x,y] < 0.8:
+                    newgrid[x,y] = 1
+        return newgrid
+
+    def PlanTrajectory(self):
+        path = self.AStar.search()
+        nextpoint = self.og.VoxelToPoint(path[1][0],path[1][1])
+
+        return plan_curved_trajectory(nextpoint)
+
+    # TODO: this is terrible
+    def ExecuteTrajectory(self):
+        trajectory = self.PlanTrajectory()
+        for waypoint in trajectory:
+            controller(waypoint)
+

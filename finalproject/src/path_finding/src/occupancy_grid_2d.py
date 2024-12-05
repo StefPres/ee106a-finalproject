@@ -1,3 +1,4 @@
+#!/usr/bin/python
 ################################################################################
 #
 # OccupancyGrid2d class listens for LaserScans and builds an occupancy grid.
@@ -188,6 +189,12 @@ class OccupancyGrid2d(object):
     def PointToVoxel(self, x, y):
         grid_x = int((x - self._x_min) / self._x_res)
         grid_y = int((y - self._y_min) / self._y_res)
+
+        return (grid_x, grid_y)
+
+    def VoxelToPoint(self, x, y):
+        grid_x = (x * self._x_res) + self._x_min
+        grid_y = (y * self._y_res) + self._y_min
 
         return (grid_x, grid_y)
 

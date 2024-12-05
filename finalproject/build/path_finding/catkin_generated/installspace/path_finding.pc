@@ -1,0 +1,8 @@
+prefix=/home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/install
+
+Name: path_finding
+Description: Description of path_finding
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

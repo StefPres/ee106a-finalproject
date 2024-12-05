@@ -25,9 +25,9 @@
   <arg name="random_downsample" default="0.1" />
 
   <!-- Mapper node. -->
-  <node name="mapper"
+  <node name="pathfinder"
         pkg="path_finding"
-        type="mapping_node.py"
+        type="pathing.py"
         output="screen">
 
     <param name="frames/fixed" value="$(arg fixed_frame)" />

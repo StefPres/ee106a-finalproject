@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # Python program for A* Search Algorithm
 # Adapted from: https://www.geeksforgeeks.org/a-search-algorithm-in-python/
 import numpy as np

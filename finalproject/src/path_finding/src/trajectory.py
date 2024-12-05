@@ -89,7 +89,6 @@ def plan_curved_trajectory(target_position):
         [trans.transform.rotation.x, trans.transform.rotation.y,
             trans.transform.rotation.z, trans.transform.rotation.w])
     
-    
     x2 = x1 + target_position[0] ## TODO: how would you get x2 from our target position? remember this is relative to x1 
     y2 = y1 + target_position[1] ## TODO: how would you get x2 from our target position? remember this is relative to x1 
 

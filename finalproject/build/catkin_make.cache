@@ -1,0 +1,2 @@
+path_finding
+-DCATKIN_DEVEL_PREFIX=/home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/devel -DCMAKE_INSTALL_PREFIX=/home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/install -G Unix Makefiles
