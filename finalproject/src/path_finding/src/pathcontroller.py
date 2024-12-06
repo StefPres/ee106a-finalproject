@@ -16,7 +16,7 @@ from ar_track_alvar_msgs.msg import Alvarmarkers
 from std_msgs.msg import ColorRGBA
 from turtlebot_control import controller
 
-# TODO: Add turtlebot commands, trajectory planning, recalculating path
+# TODO: Add recalculating path
 class PathController:
     def __init__(self):
         # Set up tf buffer and listener.
