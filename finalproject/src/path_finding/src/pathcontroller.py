@@ -12,6 +12,7 @@ from trajectory import plan_curved_trajectory
 from sensor_msgs.msg import LaserScan
 from visualization_msgs.msg import Marker
 from geometry_msgs.msg import TransformStamped, PoseStamped, Twist, Point
+from ar_track_alvar_msgs.msg import Alvarmarkers
 from std_msgs.msg import ColorRGBA
 from turtlebot_control import controller
 
@@ -30,7 +31,7 @@ class PathController:
         if not self.SetupCallbacks():
             return False
         
-        self.AStar = A_Star_Search(self.og.ExportGrid(), [0, 0], [5, 5])
+        self.AStar = A_Star_Search(self.og.ExportGrid(), [0, 0], [10, 10])
 
         # set up relevant frames and topics
         self._sensor_frame = rospy.get_param("~frames/sensor")
@@ -40,12 +41,14 @@ class PathController:
         self._sensor_topic = rospy.get_param("~topics/sensor")
         self._vis_topic = rospy.get_param("~topics/vis")
         #self._camera_topic = rospy.get_param("~topics/camera")
+        self.target_tag_id = rospy.get_param("~tags/tag_id")
 
         return True
     
     # TODO: finish
     def SetupCallbacks(self):
         self.gridupdater = rospy.Subscriber(self.og._vis_topic,Marker,self.UpdateGrid,queue_size=1)
+        #self.ar_tag = rospy.Subscriber('/ar_pose_marker', Alvarmarkers, self.updateDestination,queue_size=1)
         self.turtlebotcontroller = rospy.Publisher("cmd_vel", Twist, queue_size=10)
         return True
     
@@ -71,7 +74,16 @@ class PathController:
 
     # TODO: get the true position of the destination. this is hard-coded for testing.
     def updateDestination(self, msg):
-        self.AStar.update_dest([5, 5])
+        if not msg.markers:
+            stopRobot()
+            return
+        
+        for marker in msg.markers:
+            if marker.id = self.target_tag_id:
+                tagloc = self._tf_buffer.lookup_transform(
+                    self._fixed_frame, self.target_tag_id, rospy.Time())
+                
+                self.AStar.update_dest([10, 10])
 
     def ConvertGrid(self, grid):
         newgrid = np.zeros((grid.shape[0], grid.shape[1]))
@@ -92,4 +104,10 @@ class PathController:
         trajectory = self.PlanTrajectory()
         for waypoint in trajectory:
             controller(waypoint)
+
+    def stopRobot(self):
+        tw = Twist()
+        tw.linear.x = 0.0
+        tw.angular.z = 0.0
+        self.turtlebotcontroller.publish(tw)
 

@@ -131,6 +131,9 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/build/gtest/cmake_install.cmake")
+  include("/home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/build/ar_track_alvar_msgs/cmake_install.cmake")
+  include("/home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/build/lab4_cam/cmake_install.cmake")
+  include("/home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/build/ar_track_alvar/cmake_install.cmake")
   include("/home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/build/path_finding/cmake_install.cmake")
 
 endif()
