@@ -12,7 +12,7 @@ from trajectory import plan_curved_trajectory
 from sensor_msgs.msg import LaserScan
 from visualization_msgs.msg import Marker
 from geometry_msgs.msg import TransformStamped, PoseStamped, Twist, Point
-from ar_track_alvar_msgs.msg import Alvarmarkers
+#from ar_track_alvar_msgs.msg import Alvarmarkers
 from std_msgs.msg import ColorRGBA
 from turtlebot_control import controller
 
@@ -41,7 +41,7 @@ class PathController:
         self._sensor_topic = rospy.get_param("~topics/sensor")
         self._vis_topic = rospy.get_param("~topics/vis")
         #self._camera_topic = rospy.get_param("~topics/camera")
-        self.target_tag_id = rospy.get_param("~tags/tag_id")
+        #self.target_tag_id = rospy.get_param("~tags/tag_id")
 
         return True
     
@@ -79,7 +79,7 @@ class PathController:
             return
         
         for marker in msg.markers:
-            if marker.id = self.target_tag_id:
+            if marker.id == self.target_tag_id:
                 tagloc = self._tf_buffer.lookup_transform(
                     self._fixed_frame, self.target_tag_id, rospy.Time())
                 

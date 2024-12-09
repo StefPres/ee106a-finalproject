@@ -1,7 +1,7 @@
 <launch>
   <!-- Frames of reference. -->
-  <arg name="fixed_frame" default="odom" />
-  <arg name="sensor_frame" default="base_footprint" />
+  <arg name="fixed_frame" default="/apple/odom" />
+  <arg name="sensor_frame" default="/apple/base_footprint" />
 
   <!-- Topics. -->
   <arg name="sensor_topic" default="/scan" />

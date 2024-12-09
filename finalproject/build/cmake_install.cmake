@@ -135,6 +135,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/build/lab4_cam/cmake_install.cmake")
   include("/home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/build/ar_track_alvar/cmake_install.cmake")
   include("/home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/build/path_finding/cmake_install.cmake")
+  include("/home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/build/usb_cam/cmake_install.cmake")
 
 endif()
 

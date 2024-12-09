@@ -204,3 +204,12 @@
 /home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/build/path_finding/CMakeFiles/rebuild_cache.dir
 /home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/build/path_finding/CMakeFiles/edit_cache.dir
 /home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/build/path_finding/CMakeFiles/test.dir
+/home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/build/usb_cam/CMakeFiles/install/strip.dir
+/home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/build/usb_cam/CMakeFiles/install/local.dir
+/home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/build/usb_cam/CMakeFiles/install.dir
+/home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/build/usb_cam/CMakeFiles/list_install_components.dir
+/home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/build/usb_cam/CMakeFiles/rebuild_cache.dir
+/home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/build/usb_cam/CMakeFiles/edit_cache.dir
+/home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/build/usb_cam/CMakeFiles/test.dir
+/home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/build/usb_cam/CMakeFiles/usb_cam_node.dir
+/home/cc/ee106a/fa24/class/ee106a-abt/ee106a-finalproject/finalproject/build/usb_cam/CMakeFiles/usb_cam.dir
