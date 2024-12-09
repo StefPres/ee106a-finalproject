@@ -36,19 +36,17 @@ class PathController:
         # set up relevant frames and topics
         self._sensor_frame = rospy.get_param("~frames/sensor")
         self._fixed_frame = rospy.get_param("~frames/fixed")
-        #self._camera_frame = rospy.get_param("~frames/camera")
+        self._robot_frame = rospy.get_param("~frames/robot")
+        self._target_frame = rospy.get_param("~frames/target")
 
         self._sensor_topic = rospy.get_param("~topics/sensor")
         self._vis_topic = rospy.get_param("~topics/vis")
-        #self._camera_topic = rospy.get_param("~topics/camera")
-        #self.target_tag_id = rospy.get_param("~tags/tag_id")
 
         return True
     
     # TODO: finish
     def SetupCallbacks(self):
         self.gridupdater = rospy.Subscriber(self.og._vis_topic,Marker,self.UpdateGrid,queue_size=1)
-        #self.ar_tag = rospy.Subscriber('/ar_pose_marker', Alvarmarkers, self.updateDestination,queue_size=1)
         self.turtlebotcontroller = rospy.Publisher("cmd_vel", Twist, queue_size=10)
         return True
     
@@ -63,13 +61,32 @@ class PathController:
                 tf2_ros.ConnectivityException,
                 tf2_ros.ExtrapolationException):
             # Writes an error message to the ROS log but does not raise an exception
-            rospy.logerr("%s: Could not extract pose from TF.", self._name)
+            rospy.logerr("%s: Could not extract pose from TF.")
             return
 
         sensor_x = pose.transform.translation.x
         sensor_y = pose.transform.translation.y
         src = self.og.PointToVoxel(sensor_x, sensor_y)
         self.AStar.update_start(src)
+
+        try:
+            arpose = self._tf_buffer.lookup_transform(
+                self._robot_frame, self._target_frame, rospy.Time())
+        except (tf2_ros.LookupException,
+                tf2_ros.ConnectivityException,
+                tf2_ros.ExtrapolationException):
+            # Writes an error message to the ROS log but does not raise an exception
+            #rospy.logerr("%s: Could not extract pose from TF.")
+            return
+
+        dest_x = arpose.transform.translation.x
+        dest_y = arpose.transform.translation.y
+
+        dest = self.og.PointToVoxel(dest_x, dest_y)
+        self.AStar.update_dest(dest)
+        
+        self.og.set_destination((dest[0],dest[1]))
+
         self.ExecuteTrajectory()
 
     # TODO: get the true position of the destination. this is hard-coded for testing.
@@ -89,21 +106,31 @@ class PathController:
         newgrid = np.zeros((grid.shape[0], grid.shape[1]))
         for x in range(grid.shape[0]):
             for y in range(grid.shape[1]):
-                if grid[x,y] < 0.8:
+                if grid[x,y] < 0.6:
                     newgrid[x,y] = 1
         return newgrid
 
-    def PlanTrajectory(self):
-        path = self.AStar.search()
-        nextpoint = self.og.VoxelToPoint(path[1][0],path[1][1])
-
-        return plan_curved_trajectory(nextpoint)
-
     # TODO: this is terrible
     def ExecuteTrajectory(self):
-        trajectory = self.PlanTrajectory()
-        for waypoint in trajectory:
-            controller(waypoint)
+        path = self.AStar.search()
+        if not path:
+            return
+        print("Path confirmed: ")
+        print(path)
+        
+        path.pop(0)
+        for point in path:
+            print(f"Ready to execute path to point {point}")
+            print("Press 'y' to continue, press 'n' to quit.")
+            answer = input()
+            if not answer.lower() == 'y':
+                return
+            nextpoint = self.og.VoxelCenter(point[0],point[1])
+            trajectory = plan_curved_trajectory(nextpoint)
+            for waypoint in trajectory:
+                controller(waypoint)
+        self.og.end_destination()
+        self.stopRobot()
 
     def stopRobot(self):
         tw = Twist()

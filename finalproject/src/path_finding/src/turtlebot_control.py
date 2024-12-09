@@ -104,7 +104,7 @@ def controller(waypoint):
       msg.linear.x = proportional[0] + derivative[0] + integral[0] 
       msg.angular.z = proportional[1] + derivative[1] + integral[1] 
       control_command = msg
-      print("Control command ", control_command)
+      #print("Control command ", control_command)
 
       previous_error = error # TODO
       prev_time = curr_time # TODO

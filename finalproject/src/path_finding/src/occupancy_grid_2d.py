@@ -40,6 +40,8 @@ class OccupancyGrid2d(object):
             
         # Set up the map.
         self._map = np.zeros((self._x_num, self._y_num))
+        self.destination = (-1,-1)
+        self.has_destination = False
 
         self._initialized = True
         return True
@@ -212,15 +214,29 @@ class OccupancyGrid2d(object):
     def LogOddsToProbability(self, l):
         return 1.0 / (1.0 + np.exp(-l))
 
+    def set_destination(self, dest):
+        self.destination = dest
+        self.has_destination = True
+    
+    def end_destination(self):
+        self.destination = (-1,-1)
+        self.has_destination = False
+
     # Colormap to take log odds at a voxel to a RGBA color.
     def Colormap(self, ii, jj):
         p = self.LogOddsToProbability(self._map[ii, jj])
-
         c = ColorRGBA()
-        c.r = p
-        c.g = 0.1
-        c.b = 1.0 - p
         c.a = 0.75
+
+        if self.has_destination and ii == self.destination[0] and jj == self.destination[1]:
+            c.r = 0
+            c.g = 1.0
+            c.b = 0
+        else:
+            c.r = p
+            c.g = 0.1
+            c.b = 1.0 - p
+        
         return c
 
     # Visualize the map as a collection of flat cubes instead of
