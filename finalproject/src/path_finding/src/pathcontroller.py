@@ -117,16 +117,17 @@ class PathController:
             return
         print("Path confirmed: ")
         print(path)
-        
-        path.pop(0)
-        for point in path:
+
+        for i in range(0,len(path - 1)):
+            point = path[i]
+            nextpoint = path[i+1]
             print(f"Ready to execute path to point {point}")
             print("Press 'y' to continue, press 'n' to quit.")
             answer = input()
             if not answer.lower() == 'y':
                 return
-            nextpoint = self.og.VoxelCenter(point[0],point[1])
-            trajectory = plan_curved_trajectory(nextpoint)
+            target = self.og.VoxelCenter(nextpoint[0],nextpoint[1])
+            trajectory = plan_curved_trajectory(target)
             for waypoint in trajectory:
                 controller(waypoint)
         self.og.end_destination()
