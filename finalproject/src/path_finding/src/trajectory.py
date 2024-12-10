@@ -63,7 +63,7 @@ def generate_bezier_waypoints(x1, y1, theta1, x2, y2, theta2, offset=1.0, num_po
 
     return waypoints_with_theta
 
-def plan_curved_trajectory(target_position):
+def plan_curved_trajectory(target_position, yawoffset = 0.0):
     """
     Plan a curved trajectory for a Roomba-type robot from current_position to target_position using a Bezier curve.
     
@@ -92,7 +92,7 @@ def plan_curved_trajectory(target_position):
     x2 = x1 + target_position[0] ## TODO: how would you get x2 from our target position? remember this is relative to x1 
     y2 = y1 + target_position[1] ## TODO: how would you get x2 from our target position? remember this is relative to x1 
 
-    waypoints = generate_bezier_waypoints(x1, y1, yaw, x2, y2, yaw, offset=0.2, num_points=10)
+    waypoints = generate_bezier_waypoints(x1, y1, yaw, x2, y2, yaw + yawoffset, offset=0.2, num_points=10)
     #plot_trajectory(waypoints)
 
     return waypoints
