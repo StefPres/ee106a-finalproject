@@ -8,6 +8,7 @@ import numpy as np
 from a_star import A_Star_Search
 from occupancy_grid_2d import OccupancyGrid2d
 from trajectory import plan_curved_trajectory
+from util import direction_between
 
 from sensor_msgs.msg import LaserScan
 from visualization_msgs.msg import Marker
@@ -121,13 +122,15 @@ class PathController:
         for i in range(0,len(path - 1)):
             point = path[i]
             nextpoint = path[i+1]
-            print(f"Ready to execute path to point {point}")
+            print(f"Ready to execute path to point {nextpoint}")
             print("Press 'y' to continue, press 'n' to quit.")
             answer = input()
             if not answer.lower() == 'y':
                 return
             target = self.og.VoxelCenter(nextpoint[0],nextpoint[1])
-            trajectory = plan_curved_trajectory(target)
+            vectotarget = nextpoint - point
+            direction = direction_between(np.array([1,0,0]),vectotarget)
+            trajectory = plan_curved_trajectory(target, True, direction)
             for waypoint in trajectory:
                 controller(waypoint)
         self.og.end_destination()
