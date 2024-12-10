@@ -92,7 +92,7 @@ def plan_curved_trajectory(target_position, usefinalorientation = False, finalor
     x2 = x1 + target_position[0] ## TODO: how would you get x2 from our target position? remember this is relative to x1 
     y2 = y1 + target_position[1] ## TODO: how would you get x2 from our target position? remember this is relative to x1 
 
-    waypoints = generate_bezier_waypoints(x1, y1, yaw, x2, y2, finalorientation if usefinalorientation else yaw, offset=0.2, num_points=10)
+    waypoints = generate_bezier_waypoints(x1, y1, yaw, x2, y2, finalorientation if usefinalorientation else yaw, offset=0.2, num_points=20)
     #plot_trajectory(waypoints)
 
     return waypoints
