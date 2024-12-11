@@ -81,8 +81,8 @@ def controller(waypoint):
       curr_time = rospy.get_time()
 
       # some debug output below
-      print(f"Current: {trans_odom_to_base_link.transform.translation.x}, {trans_odom_to_base_link.transform.translation.y}, {baselink_yaw  }")
-      print(f"Target: {waypoint}")
+      #print(f"Current: {trans_odom_to_base_link.transform.translation.x}, {trans_odom_to_base_link.transform.translation.y}, {baselink_yaw  }")
+      #print(f"Target: {waypoint}")
 
       # Process trans to get your state error
       # Generate a control command to send to the robot

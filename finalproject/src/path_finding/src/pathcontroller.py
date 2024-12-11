@@ -114,12 +114,13 @@ class PathController:
     # TODO: this is terrible
     def ExecuteTrajectory(self):
         path = self.AStar.search()
+        self.og.set_path(path)
         if not path:
             return
         print("Path confirmed: ")
         print(path)
 
-        for i in range(0,len(path - 1)):
+        for i in range(0,len(path) - 1):
             point = path[i]
             nextpoint = path[i+1]
             print(f"Ready to execute path to point {nextpoint}")
@@ -128,7 +129,7 @@ class PathController:
             if not answer.lower() == 'y':
                 return
             target = self.og.VoxelCenter(nextpoint[0],nextpoint[1])
-            vectotarget = nextpoint - point
+            vectotarget = np.array([nextpoint[0],nextpoint[1],0]) - np.array([point[0],point[1],0])
             direction = direction_between(np.array([1,0,0]),vectotarget)
             trajectory = plan_curved_trajectory(target, True, direction)
             for waypoint in trajectory:

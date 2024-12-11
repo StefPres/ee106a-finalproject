@@ -43,6 +43,8 @@ class OccupancyGrid2d(object):
         self.destination = (-1,-1)
         self.has_destination = False
 
+        self.path = []
+        self.has_path = False
         self._initialized = True
         return True
 
@@ -217,10 +219,16 @@ class OccupancyGrid2d(object):
     def set_destination(self, dest):
         self.destination = dest
         self.has_destination = True
+
+    def set_path(self, path):
+        self.path = path
+        self.has_path = True
     
     def end_destination(self):
         self.destination = (-1,-1)
         self.has_destination = False
+        self.path = []
+        self.has_path = False
 
     # Colormap to take log odds at a voxel to a RGBA color.
     def Colormap(self, ii, jj):
@@ -228,10 +236,16 @@ class OccupancyGrid2d(object):
         c = ColorRGBA()
         c.a = 0.75
 
+        to_point = (ii,jj)
+
         if self.has_destination and ii == self.destination[0] and jj == self.destination[1]:
             c.r = 0
             c.g = 1.0
             c.b = 0
+        elif self.has_path and to_point in self.path:
+            c.r = 1.0
+            c.g = 1.0
+            c.b = 1.0
         else:
             c.r = p
             c.g = 0.1
