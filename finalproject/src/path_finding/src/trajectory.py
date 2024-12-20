@@ -73,8 +73,8 @@ def plan_curved_trajectory(target_position, usefinalorientation = False, finalor
     Returns:
     - A list of waypoints [(x, y, theta), ...] where type can be 'rotate' or 'move' and value is the amount to rotate in radians or move in meters.
     """
-    tfBuffer = tf2_ros.Buffer() ## TODO: initialize a buffer
-    tfListener = tf2_ros.TransformListener(tfBuffer) ## TODO: initialize a transform listener
+    tfBuffer = tf2_ros.Buffer()
+    tfListener = tf2_ros.TransformListener(tfBuffer)
     rospy.sleep(1)
 
     while not rospy.is_shutdown():
@@ -89,8 +89,8 @@ def plan_curved_trajectory(target_position, usefinalorientation = False, finalor
         [trans.transform.rotation.x, trans.transform.rotation.y,
             trans.transform.rotation.z, trans.transform.rotation.w])
     
-    x2 = x1 + target_position[0] ## TODO: how would you get x2 from our target position? remember this is relative to x1 
-    y2 = y1 + target_position[1] ## TODO: how would you get x2 from our target position? remember this is relative to x1 
+    x2 = x1 + target_position[0] 
+    y2 = y1 + target_position[1] 
 
     waypoints = generate_bezier_waypoints(x1, y1, yaw, x2, y2, finalorientation if usefinalorientation else yaw, offset=0.2, num_points=20)
     #plot_trajectory(waypoints)
