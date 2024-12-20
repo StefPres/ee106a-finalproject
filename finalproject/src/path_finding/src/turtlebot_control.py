@@ -120,29 +120,3 @@ def controller(waypoint):
     # Use our rate object to sleep until it is time to publish again
     r.sleep()
 
-
-def planning_callback(msg):
-  try:
-    trajectory = plan_curved_trajectory((msg.x, msg.y)) # TODO: What is the tuple input to this function?
-    # TODO: write a loop to loop over our waypoints and call the controller function on each waypoint
-    for waypoint in trajectory:
-      controller(waypoint)
-
-  except rospy.ROSInterruptException as e:
-    print("Exception thrown in planning callback: " + str(e))
-    pass
-      
-
-# This is Python's sytax for a main() method, which is run by default
-# when exectued in the shell
-if __name__ == '__main__':
-  # Check if the node has received a signal to shut down
-  # If not, run the talker method
-
-  #Run this program as a new node in the ROS computation graph 
-  #called /turtlebot_controller.
-  rospy.init_node('turtlebot_controller', anonymous=True)
-
-  rospy.Subscriber("goal_point", Point, planning_callback) # TODO: what are we subscribing to here?
-  
-  rospy.spin()
