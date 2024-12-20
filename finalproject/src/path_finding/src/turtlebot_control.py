@@ -39,7 +39,7 @@ def controller(waypoint):
   # NOTE: The Turtlebot typically does not need an integral term so we set it to 0 to make this a PD controller
   Kp = np.diag([2, 0.8]) # TODO: You may need to tune these values for your turtlebot
   Kd = np.diag([-0.5, 0.5]) # TODO: You may need to tune these values for your turtlebot
-  Ki = np.diag([0, 0])        #print(newgrid)
+  Ki = np.diag([0, 0]) 
 
   prev_time = rospy.get_time() # TODO: initialize your time, what rospy function would be helpful here?
   integ = np.zeros(2) # TODO: initialize an empty np array -- make sure to keep your sizes consistent
